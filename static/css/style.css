@@ -1,0 +1,239 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway&family=Roboto+Mono&family=Varela+Round&display=swap');
+
+
+:root {
+	--background-1: #7EA16B;
+	--background-2: #FBAF00;
+	--foreground-1: #FFD639;
+	--foreground-2: #007CBE;
+	--highlight: #FFA3AF;
+}
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+body, html {
+	font-family: 'Varela Round', sans-serif;
+	background-color: var(--background-1);
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden;
+	background-image: url("/static/media/background.png");
+	background-size: 100vw 100vh;
+	background-repeat: no-repeat;
+}
+
+ion-icon {
+	transform: scale(1.25);
+	vertical-align: middle;
+}
+
+h1 {
+	font-size: 5vh;
+	text-align: center;
+	color: var(--foreground-1);
+	margin-bottom: 15px;
+}
+
+main {
+	margin: 5vh 5vw;
+	height: 90vh;
+	width: 90vw;
+}
+
+#inputs {
+	max-height: 58vh;
+	overflow: auto;
+	scroll-behavior: smooth;
+}
+
+#inputs .point, #headers {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 5px;
+}
+
+#inputs .point {
+	margin-top: 5px;
+	background-color: rgba(200, 200, 200, 0.7);
+	border-radius: 10px;
+	padding: 10px;
+	height: max-content;
+}
+
+
+#headers h3, #inputs div {
+	width: 100%;
+}
+
+#headers h3 {
+	text-align: center;
+	font-size: 3vh;
+	color: #fff;
+}
+
+#inputs input {
+	width: 60%;
+	font-family: 'Roboto Mono', monospace;
+}
+
+#inputs .name { width: 98%; }
+
+
+#inputs input, #inputs select {
+	height: 100%;
+	font-size: 1.5vw;
+	line-height: 1.5vw;
+	border: none;
+	border-radius: 5px;
+	padding: 5px 10px;
+	vertical-align: middle;
+}
+
+
+input:focus, select:focus, button:focus {
+	box-shadow: 0 0 1px 2px var(--highlight);
+	outline: none;
+}
+
+#inputs select {
+	width: 100%;
+	text-align-last: center;
+}
+
+select, button {
+	font-family: 'Raleway', sans-serif;
+}
+
+#inputs input+select {
+	width: 36%;
+}
+
+
+#new-point {
+	margin-top: 1.5vh;
+	width: 100%;
+	font-size: 3vh;
+	padding: 1.75vh 0;
+	text-align: center;
+	border: none;
+	border-radius: 10px;
+	color: var(--foreground-2);
+	background-color: #fff;
+	transition: all 0.3s;
+}
+
+#new-point:hover {
+	background-color: var(--foreground-2);
+	color: #fff;
+	cursor: pointer;
+}
+
+#new-point span {
+	vertical-align: middle;
+}
+
+#gens {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 1vw;
+}
+
+.generate {
+	margin-top: 2.25vh;
+	width: 100%;
+	font-size: 4vh;
+	padding: 2.25vh 0;
+	text-align: center;
+	border: none;
+	border-radius: 15px;
+	color: var(--foreground-1);
+	background-color: #fff;
+	transition: all 0.3s;
+}
+
+.generate:hover {
+	background-color: var(--foreground-1);
+	color: #fff;
+	cursor: pointer;
+}
+
+.generate span {
+	vertical-align: middle;
+}
+
+.hidden {
+	display: none;
+}
+
+#image-container {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.75);
+}
+
+#image-container #output {
+	margin: 5vh 5vw;
+	width: 90vw;
+	height: 90vh;
+	object-fit: contain;
+}
+
+#image-container #loader {
+	margin: 40vh 40vw;
+	width: 10vw;
+	height: 10vh;
+	object-fit: contain;
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+
+#image-container #close {
+	position: fixed;
+	top: 5vh;
+	right: 5vw;
+	width: 50px;
+	height: 50px;
+	font-size: 40px;
+	line-height: 40px;
+	background-color: var(--foreground-1);
+	color: #fff;
+	border: none;
+	padding: 0;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+	#inputs select {
+		-webkit-appearance: none;
+	}
+
+	#inputs input+select {
+		width: 32%;
+	}
+
+	#inputs input, #inputs select {
+		padding: 2px 3px;
+		font-size: 2.5vw;
+		line-height: 2.5vw;
+	}
+
+	#inputs .point {
+		padding: 7px;
+	}
+
+	#headers h3 {
+		font-size: 2vh;
+	}
+}

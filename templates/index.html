@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<title>TrackGen</title>
+		<link href="/static/css/style.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<main>
+			<h1>TrackGen</h1>
+			
+			
+			<div id="headers">
+				<h3>Name</h3>
+				<h3>Latitude</h3>
+				<h3>Longitude</h3>
+				<h3>Wind Speed</h3>
+				<h3>Stage</h3>
+			</div>
+
+			<form>
+				<div id="inputs">
+					<div class="point">
+						<div>
+							<input type="text" class="name">
+						</div>
+
+						<div>
+							<input type="number" step="any" class="latitude" min="0" max="90" required>
+							<select class="latitude">
+								<option value="°N">°N</option>
+								<option value="°S">°S</option>
+							</select>
+						</div>
+						
+						<div>
+							<input type="number" step="any" class="longitude" min="0" max="180" required>
+							<select class="longitude">
+								<option value="°E">°E</option>
+								<option value="°W">°W</option>
+							</select>
+						</div>
+
+						<div>
+							<input type="number" step="any" min="0" class="speed">
+							<select class="speed">
+								<option value="kph">kph</option>
+								<option value="mph">mph</option>
+								<option value="kt">kt</option>
+							</select>
+						</div>
+
+						<div>
+							<select class="stage">
+								<option value="Extratropical cyclone">Extratropical cyclone</option>
+								<option value="Subtropical cyclone">Subtropical cyclone</option>
+								<option value="Tropical cyclone">Tropical cyclone</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<button type="button" id="new-point"><ion-icon name="add-circle-outline"></ion-icon> <span>New Point</span></button>
+			
+			<div id="gens">
+				<button class="generate" type="submit" data-size="small"><ion-icon name="analytics-outline"></ion-icon> <span>Generate Map - normal</span></button>
+				<button class="generate" type="submit" data-size="medium"><ion-icon name="analytics-outline"></ion-icon> <span>Generate Map - large</span></button>
+			</div>
+			</form>
+		</main>
+
+		<div id="image-container" class="hidden"><img id="loader" src="/static/media/cyclone.png" alt="loading"><img id="output" alt="track map"><button id="close"><ion-icon name="close-outline"></ion-icon></button></div>
+		
+		<script src="/static/js/new_point.js"></script>
+		<script src="/static/js/get_track.js"></script>
+		<script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
+		
+		<a title="Real Time Web Analytics" href="http://clicky.com/101324801"><img alt="Clicky" src="//static.getclicky.com/media/links/badge.gif" border="0" /></a>
+		<script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101324801);</script>
+		<script async src="//static.getclicky.com/js"></script>
+		<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101324801ns.gif" /></p></noscript>
+	</body>
+</html>
