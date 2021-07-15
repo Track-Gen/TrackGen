@@ -6,13 +6,14 @@ document.getElementById("close").addEventListener("click", () => {
 document.querySelectorAll(".generate").forEach(button => {
 	button.addEventListener("click", () => {
 		document.querySelector("form").setAttribute("data-size", button.getAttribute("data-size"));
-		document.getElementById("image-container").classList.toggle("hidden");
-		document.getElementById("output").classList.toggle("hidden");
 	});
 });
 
 document.querySelector("form").addEventListener("submit", (e) => {
 	e.preventDefault();
+	
+	document.getElementById("image-container").classList.toggle("hidden");
+	document.getElementById("output").classList.toggle("hidden");
 
 	data = [];
 	document.querySelectorAll("#inputs .point").forEach(point => {
