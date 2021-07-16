@@ -50,7 +50,7 @@ def gen_tracker():
 
 	# if size == "large": map = map_large
 	if size == "medium": map, DOT_SIZE = map_medium, 30
-	else: map, DOT_SIZE = map_small, 15
+	else: map, DOT_SIZE = map_small, 10
 
 	FULL_WIDTH, FULL_HEIGHT = map.size
 
