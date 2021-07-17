@@ -1,6 +1,7 @@
 document.getElementById("close").addEventListener("click", () => {
-	document.getElementById("image-container").classList.toggle("hidden");
-	document.getElementById("loader").classList.toggle("hidden");
+	document.getElementById("image-container").classList = "hidden";
+	document.getElementById("output").classList = "hidden";
+	document.getElementById("close").classList = "hidden";
 });
 
 document.querySelectorAll(".generate").forEach(button => {
@@ -12,8 +13,10 @@ document.querySelectorAll(".generate").forEach(button => {
 document.querySelector("form").addEventListener("submit", (e) => {
 	e.preventDefault();
 	
-	document.getElementById("image-container").classList.toggle("hidden");
-	document.getElementById("output").classList.toggle("hidden");
+	document.getElementById("output").classList = "hidden";
+	document.getElementById("loader").classList = "";
+	document.getElementById("image-container").classList = "";
+	document.getElementById("close").classList = "hidden";
 
 	data = [];
 	document.querySelectorAll("#inputs .point").forEach(point => {
@@ -56,7 +59,8 @@ document.querySelector("form").addEventListener("submit", (e) => {
 	.then(response => response.blob())
 	.then(blob => {
 		document.getElementById("output").src = URL.createObjectURL(blob);
-		document.getElementById("loader").classList.toggle("hidden");
-		document.getElementById("output").classList.toggle("hidden");
+		document.getElementById("loader").classList = "hidden";
+		document.getElementById("output").classList = "";
+	document.getElementById("close").classList = "";
 	});
 });

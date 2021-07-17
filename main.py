@@ -11,7 +11,20 @@ from flask import render_template
 Image.MAX_IMAGE_PIXELS = None
 map_small = Image.open("map-small.jpg")
 map_medium = Image.open("map-medium.jpg")
-# map_large = Image.open("map-large.jpg")
+
+
+def get_stage(initials):
+	return {
+		"TD": "Tropical Cyclone",
+		"TS": "Tropical Cyclone",
+		"HU": "Tropical Cyclone",
+		"EX": "Extratropical Cyclone",
+		"LO": "Extratropical Cyclone",
+		"DB": "Extratropical Cyclone",
+		"WV": "Extratropical Cyclone",
+		"SD": "Subtropical Cyclone",
+		"SS": "Subtropical Cyclone"
+	}[initials.upper()]
 
 
 def get_shape(stage):
@@ -32,23 +45,7 @@ def get_colour(speed):
 	else: return (255, 96, 96)
 
 
-app = Flask(__name__)
-
-@app.route("/")
-def main():
-	return render_template("index.html")
-
-
-@app.route("/api/trackgen", methods=["POST"])
-def gen_tracker():
-	tracks = request.json
-
-	if tracks == None: abort(400)
-	
-
-	size = request.args.get("size", "small")
-
-	# if size == "large": map = map_large
+def make_map(tracks, size):
 	if size == "medium": map, DOT_SIZE = map_medium, 30
 	else: map, DOT_SIZE = map_small, 10
 
@@ -129,9 +126,50 @@ def gen_tracker():
 			if shape == "square": draw.rectangle(coordinates, fill=get_colour(marker["speed"]))
 			elif shape == "circle": draw.ellipse(coordinates, fill=get_colour(marker["speed"]))
 
-	new_map = new_map.resize((zoom_width, zoom_height), resample=Image.ANTIALIAS) # anti aliasing
+	return new_map.resize((zoom_width, zoom_height), resample=Image.ANTIALIAS) # anti aliasing
 
-	new_map.save("tempFile.png")
+
+app = Flask(__name__)
+
+@app.route("/")
+def main():
+	return render_template("index.html")
+
+
+@app.route("/api/trackgen", methods=["POST"])
+def gen_tracker():
+	tracks = request.json
+
+	if tracks == None: abort(400)	
+
+	size = request.args.get("size", "small")
+
+	make_map(tracks, size).save("tempFile.png")
+	return send_file("tempFile.png")
+
+
+@app.route("/api/btfile", methods=["POST"])
+def btfile():
+	data = request.json.split("\n")
+
+	parsed = []
+	unique_id = ""
+	for line in data:
+		cols = line.split(", ")
+		if len(cols) == 3:
+			unique_id = cols[0]
+		else:
+			parsed.append(
+				{
+					"name": unique_id,
+					"latitude": float(cols[4][:-1]) + (90.00000000001 if cols[4][-1] == "S" else 0),
+					"longitude": float(cols[5][:-1]) + (180.00000000001 if cols[5][-1] == "E" else 0),
+					"speed": float(cols[6]) * 1.852,
+					"stage": get_stage(cols[3])
+				}
+			)
+	
+	make_map(parsed, "small").save("tempFile.png")
 	return send_file("tempFile.png")
 
 
