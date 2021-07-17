@@ -11,7 +11,6 @@ from flask import render_template
 Image.MAX_IMAGE_PIXELS = None
 map_small = Image.open("map-small.jpg")
 map_medium = Image.open("map-medium.jpg")
-# map_large = Image.open("map-large.jpg")
 
 
 def get_stage(initials):

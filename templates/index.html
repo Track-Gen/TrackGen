@@ -7,71 +7,93 @@
 		<link href="/static/css/style.css" rel="stylesheet" type="text/css" />
 	</head>
 	<body>
-		<main>
+		<main>			
 			<h1>TrackGen</h1>
-			
-			
-			<div id="headers">
-				<h3>Name</h3>
-				<h3>Latitude</h3>
-				<h3>Longitude</h3>
-				<h3>Wind Speed</h3>
-				<h3>Stage</h3>
+			<div id="input-type">
+				<button class="selected">Manual Input</button>
+				<button>BT File</button>
 			</div>
-
-			<form>
-				<div id="inputs">
-					<div class="point">
-						<div>
-							<input type="text" class="name">
-						</div>
-
-						<div>
-							<input type="number" step="any" class="latitude" min="0" max="90" required>
-							<select class="latitude">
-								<option value="°N">°N</option>
-								<option value="°S">°S</option>
-							</select>
-						</div>
-						
-						<div>
-							<input type="number" step="any" class="longitude" min="0" max="180" required>
-							<select class="longitude">
-								<option value="°E">°E</option>
-								<option value="°W">°W</option>
-							</select>
-						</div>
-
-						<div>
-							<input type="number" step="any" min="0" class="speed">
-							<select class="speed">
-								<option value="kph">kph</option>
-								<option value="mph">mph</option>
-								<option value="kt">kt</option>
-							</select>
-						</div>
-
-						<div>
-							<select class="stage">
-								<option value="Extratropical cyclone">Extratropical cyclone</option>
-								<option value="Subtropical cyclone">Subtropical cyclone</option>
-								<option value="Tropical cyclone">Tropical cyclone</option>
-							</select>
-						</div>
-					</div>
+			
+			<div class="page">
+				<div id="headers">
+					<h3>Name</h3>
+					<h3>Latitude</h3>
+					<h3>Longitude</h3>
+					<h3>Wind Speed</h3>
+					<h3>Stage</h3>
 				</div>
 
-				<button type="button" id="new-point"><ion-icon name="add-circle-outline"></ion-icon> <span>New Point</span></button>
-			
-			<div id="gens">
-				<button class="generate" type="submit" data-size="small"><ion-icon name="analytics-outline"></ion-icon> <span>Generate Map - normal</span></button>
-				<button class="generate" type="submit" data-size="medium"><ion-icon name="analytics-outline"></ion-icon> <span>Generate Map - large</span></button>
+				<form>
+					<div id="inputs">
+						<div class="point">
+							<div>
+								<input type="text" class="name">
+							</div>
+
+							<div>
+								<input type="number" step="any" class="latitude" min="0" max="90" required>
+								<select class="latitude">
+									<option value="°N">°N</option>
+									<option value="°S">°S</option>
+								</select>
+							</div>
+							
+							<div>
+								<input type="number" step="any" class="longitude" min="0" max="180" required>
+								<select class="longitude">
+									<option value="°E">°E</option>
+									<option value="°W">°W</option>
+								</select>
+							</div>
+
+							<div>
+								<input type="number" step="any" min="0" class="speed">
+								<select class="speed">
+									<option value="kph">kph</option>
+									<option value="mph">mph</option>
+									<option value="kt">kt</option>
+								</select>
+							</div>
+
+							<div>
+								<select class="stage">
+									<option value="Extratropical cyclone">Extratropical cyclone</option>
+									<option value="Subtropical cyclone">Subtropical cyclone</option>
+									<option value="Tropical cyclone">Tropical cyclone</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<button type="button" id="new-point"><ion-icon name="add-circle-outline"></ion-icon> <span>New Point</span></button>
+				
+				<div id="gens">
+					<button class="generate" type="submit" data-size="small"><ion-icon name="analytics-outline"></ion-icon> <span>Generate Map - normal</span></button>
+					<button class="generate" type="submit" data-size="medium"><ion-icon name="analytics-outline"></ion-icon> <span>Generate Map - large</span></button>
+				</div>
+				</form>
 			</div>
-			</form>
+
+			<div class="page">
+				<div id="page2-content">
+					<form id="paste-upload">
+						<textarea placeholder="Paste BT file here" required></textarea>
+						<button type="submit" class="generate"><ion-icon name="analytics-outline"></ion-icon> <span>Generate Map</span></button>
+					</form>
+
+					<form id="file-upload">
+						<div class="separator">OR</div>
+						<label for="file-input" class="generate"><ion-icon name="folder-outline"></ion-icon> <span>Upload File</span></label>
+						<input type="file" id="file-input">
+					</form>
+				</div>
+			</div>
 		</main>
 
-		<div id="image-container" class="hidden"><img id="loader" src="/static/media/cyclone.png" alt="loading"><img id="output" alt="track map"><button id="close"><ion-icon name="close-outline"></ion-icon></button></div>
+		<div id="image-container" class="hidden"><img id="loader" src="/static/media/cyclone.png" alt="loading"><img id="output" class="hidden" alt="track map"><button id="close"><ion-icon name="close-outline"></ion-icon></button></div>
 		
+		<script src="/static/js/pages.js"></script>
+		<script src="/static/js/btfile.js"></script>
 		<script src="/static/js/new_point.js"></script>
 		<script src="/static/js/get_track.js?v2"></script>
 		<script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
