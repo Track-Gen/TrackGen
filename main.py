@@ -36,12 +36,12 @@ def get_shape(stage):
 
 def get_colour(speed):
 	if speed == 0: return (192, 192, 192)
-	elif speed <= 62: return (94, 186, 255)
-	elif speed <= 118: return (0, 250, 244)
-	elif speed <= 153: return (255, 255, 204)
-	elif speed <= 177: return (255, 231, 117)
-	elif speed <= 208: return (255, 193, 64)
-	elif speed <= 251: return (255, 143, 32)
+	elif speed <= 34: return (94, 186, 255)
+	elif speed <= 64: return (0, 250, 244)
+	elif speed <= 83: return (255, 255, 204)
+	elif speed <= 96: return (255, 231, 117)
+	elif speed <= 113: return (255, 193, 64)
+	elif speed <= 137: return (255, 143, 32)
 	else: return (255, 96, 96)
 
 
@@ -53,8 +53,8 @@ def make_map(tracks, size):
 
 
 	for i in tracks:
-		i["longitude"] = FULL_WIDTH/2 - float(i["longitude"]) / 360 * FULL_WIDTH if float(i["longitude"]) <= 180 else FULL_WIDTH/2 + (float(i["longitude"]) - 180) / 360 * FULL_WIDTH
-		i["latitude"] = FULL_HEIGHT/2 - float(i["latitude"]) / 180 * FULL_HEIGHT if float(i["latitude"]) <= 90 else FULL_HEIGHT/2 + (float(i["latitude"]) - 90) / 180 * FULL_HEIGHT
+		i["longitude"] = FULL_WIDTH/2 - float(i["longitude"][:-1]) * (-1 if i["longitude"][-1] == "E" else 1) / 360 * FULL_WIDTH
+		i["latitude"] = FULL_HEIGHT/2 - float(i["latitude"][:-1]) * (-1 if i["latitude"][-1] == "S" else 1) / 180 * FULL_HEIGHT
 		i["speed"] = float(i["speed"])
 
 	# cropping and resizing ==============================================
@@ -162,9 +162,9 @@ def btfile():
 			parsed.append(
 				{
 					"name": unique_id,
-					"latitude": float(cols[4][:-1]) + (90.00000000001 if cols[4][-1] == "S" else 0),
-					"longitude": float(cols[5][:-1]) + (180.00000000001 if cols[5][-1] == "E" else 0),
-					"speed": float(cols[6]) * 1.852,
+					"latitude": cols[4],
+					"longitude": cols[5],
+					"speed": float(cols[6]),
 					"stage": get_stage(cols[3])
 				}
 			)

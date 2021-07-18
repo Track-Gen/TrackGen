@@ -22,18 +22,16 @@ document.querySelector("form").addEventListener("submit", (e) => {
 	document.querySelectorAll("#inputs .point").forEach(point => {
 		const name = point.children[0].children[0].value;
 
-		let latitude = Number(point.children[1].children[0].value);
-		if (point.children[1].children[1].getAttribute("data-selected") === "°S") latitude += 90.00000000001;
+		const latitude = Number(point.children[1].children[0].value) + point.children[1].children[1].getAttribute("data-selected").replace("°", "");
 
-		let longitude = Number(point.children[2].children[0].value);
-		if (point.children[2].children[1].getAttribute("data-selected") === "°E") longitude += 180.00000000001;
+		const longitude = point.children[2].children[0].value + point.children[2].children[1].getAttribute("data-selected").replace("°", "");
 
 		
 		let speed = Number(point.children[3].children[0].value);
 		if (point.children[3].children[1].getAttribute("data-selected") === "mph") {
-			speed *= 1.609;
-		} else if (point.children[3].children[1].getAttribute("data-selected") === "kt") {
-			speed *= 1.852;
+			speed /= 1.151;
+		} else if (point.children[3].children[1].getAttribute("data-selected") === "kph") {
+			speed /= 1.852;
 		}
 
 		const stage = point.children[4].children[0].getAttribute("data-selected");
