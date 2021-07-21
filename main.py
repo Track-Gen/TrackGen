@@ -24,7 +24,7 @@ def get_atcf_stage(initials):
 	initials = initials.upper()
 	if initials in ["TY", "TD", "TS", "ST", "TC", "HU", "XX"]: return "Tropical Cyclone"
 	elif initials in ["SD", "SS"]: return "Subtropical Cyclone"
-	elif initials in ["EX", "MD", "IN", "DS", "LO", "WV", "ET"]: return "Extratropical Cyclone"
+	elif initials in ["EX", "MD", "IN", "DS", "LO", "WV", "ET", "DB"]: return "Extratropical Cyclone"
 
 
 def get_shape(stage):
@@ -103,6 +103,8 @@ def make_map(tracks, size):
 		current = ""
 		for marker in tracks:
 			if marker["stage"] != "" and current != marker["stage"]: current = marker["stage"]
+			print(marker)
+			print(current)
 			shape = get_shape(current)
 
 			if shape == "triangle":
@@ -180,15 +182,11 @@ def atcf():
 	parsed = []
 	for line in data:
 		cols = line.split(", ")
-		latitude = cols[6]
-		latitude[-2] = "."+latitude[-2]
-		longitude = cols[7]
-		longitude[-2] = "."+longitude[-2]
 		parsed.append(
 			{
 				"name": cols[1],
-				"latitude": latitude,
-				"longitude": longitude,
+				"latitude": cols[6][:-2]+"."+cols[6][-2:],
+				"longitude": cols[7][:-2]+"."+cols[7][-2:],
 				"speed": float(cols[8]),
 				"stage": get_atcf_stage(cols[10])
 			}
