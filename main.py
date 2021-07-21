@@ -13,7 +13,7 @@ map_small = Image.open("map-small.jpg")
 map_medium = Image.open("map-medium.jpg")
 
 
-def get_bt_stage(initials):
+def get_hurdat_stage(initials):
 	initials = initials.upper()
 	if initials in ["TD", "TS", "HU"]: return "Tropical Cyclone"
 	elif initials in ["SD", "SS"]: return "Subtropical Cyclone"
@@ -103,8 +103,6 @@ def make_map(tracks, size):
 		current = ""
 		for marker in tracks:
 			if marker["stage"] != "" and current != marker["stage"]: current = marker["stage"]
-			print(marker)
-			print(current)
 			shape = get_shape(current)
 
 			if shape == "triangle":
@@ -150,7 +148,7 @@ def gen_tracker():
 	return send_file("tempFile.png")
 
 
-@app.route("/api/btfile", methods=["POST"])
+@app.route("/api/hurdat", methods=["POST"])
 def btfile():
 	data = request.json.split("\n")
 
@@ -167,7 +165,7 @@ def btfile():
 					"latitude": cols[4],
 					"longitude": cols[5],
 					"speed": float(cols[6]),
-					"stage": get_bt_stage(cols[3])
+					"stage": get_hurdat_stage(cols[3])
 				}
 			)
 	

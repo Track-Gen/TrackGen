@@ -6,14 +6,8 @@ document.getElementById("paste-upload").addEventListener("submit", (e) => {
 	document.getElementById("image-container").classList = "";
 	document.getElementById("close").classList = "hidden";
 
-	let route;
-	if (document.getElementById("file-format").getAttribute("data-selected") === "BT File") {
-		route = "btfile";
-	} else {
-		route = "atcf";
-	}
-
-	fetch("/api/"+route,
+	
+	fetch("/api/"+document.getElementById("file-format").getAttribute("data-selected").toLowerCase(),
 		{
 			method: "POST",
 			headers: {
@@ -39,7 +33,7 @@ document.getElementById("file-input").addEventListener("change", (e) => {
 	const file = e.target.files[0];
 	const fr = new FileReader();
 	fr.onload = function(evt) {
-			fetch("/api/btfile",
+			fetch("/api/"+document.getElementById("file-format").getAttribute("data-selected").toLowerCase(),
 				{
 					method: "POST",
 					headers: {
