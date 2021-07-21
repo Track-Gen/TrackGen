@@ -13,18 +13,18 @@ map_small = Image.open("map-small.jpg")
 map_medium = Image.open("map-medium.jpg")
 
 
-def get_stage(initials):
-	return {
-		"TD": "Tropical Cyclone",
-		"TS": "Tropical Cyclone",
-		"HU": "Tropical Cyclone",
-		"EX": "Extratropical Cyclone",
-		"LO": "Extratropical Cyclone",
-		"DB": "Extratropical Cyclone",
-		"WV": "Extratropical Cyclone",
-		"SD": "Subtropical Cyclone",
-		"SS": "Subtropical Cyclone"
-	}[initials.upper()]
+def get_bt_stage(initials):
+	initials = initials.upper()
+	if initials in ["TD", "TS", "HU"]: return "Tropical Cyclone"
+	elif initials in ["SD", "SS"]: return "Subtropical Cyclone"
+	elif initials in["EX", "LO", "DB", "WV"]: return "Extratropical Cyclone"
+
+
+def get_atcf_stage(initials):
+	initials = initials.upper()
+	if initials in ["TY", "TD", "TS", "ST", "TC", "HU", "XX"]: return "Tropical Cyclone"
+	elif initials in ["SD", "SS"]: return "Subtropical Cyclone"
+	elif initials in ["EX", "MD", "IN", "DS", "LO", "WV", "ET", "DB"]: return "Extratropical Cyclone"
 
 
 def get_shape(stage):
@@ -103,6 +103,8 @@ def make_map(tracks, size):
 		current = ""
 		for marker in tracks:
 			if marker["stage"] != "" and current != marker["stage"]: current = marker["stage"]
+			print(marker)
+			print(current)
 			shape = get_shape(current)
 
 			if shape == "triangle":
@@ -165,12 +167,34 @@ def btfile():
 					"latitude": cols[4],
 					"longitude": cols[5],
 					"speed": float(cols[6]),
-					"stage": get_stage(cols[3])
+					"stage": get_bt_stage(cols[3])
 				}
 			)
 	
 	make_map(parsed, "small").save("tempFile.png")
 	return send_file("tempFile.png")
+
+
+@app.route("/api/atcf",  methods=["POST"])
+def atcf():	
+	data = request.json.split("\n")
+
+	parsed = []
+	for line in data:
+		cols = line.split(", ")
+		parsed.append(
+			{
+				"name": cols[1],
+				"latitude": cols[6][:-2]+"."+cols[6][-2:],
+				"longitude": cols[7][:-2]+"."+cols[7][-2:],
+				"speed": float(cols[8]),
+				"stage": get_atcf_stage(cols[10])
+			}
+		)
+	
+	make_map(parsed, "small").save("tempFile.png")
+	return send_file("tempFile.png")
+
 
 
 @app.route("/favicon.ico")

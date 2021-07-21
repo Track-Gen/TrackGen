@@ -220,6 +220,22 @@ select, button {
 	gap: 2vh;
 }
 
+#file-format-wrapper {
+	width: max-content;
+	margin: 0 auto 1vh auto;
+	font-size: 2.5vh;
+	color: var(--foreground-1);
+}
+
+
+#file-format {
+	outline: none;
+	border: none;
+	font-size: 2vh;
+	border-radius: 0.5vh;
+}
+
+
 #page2-content form {
 	height: 100%;
 	width: 100%;
