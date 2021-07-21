@@ -13,18 +13,18 @@ map_small = Image.open("map-small.jpg")
 map_medium = Image.open("map-medium.jpg")
 
 
-def get_stage(initials):
-	return {
-		"TD": "Tropical Cyclone",
-		"TS": "Tropical Cyclone",
-		"HU": "Tropical Cyclone",
-		"EX": "Extratropical Cyclone",
-		"LO": "Extratropical Cyclone",
-		"DB": "Extratropical Cyclone",
-		"WV": "Extratropical Cyclone",
-		"SD": "Subtropical Cyclone",
-		"SS": "Subtropical Cyclone"
-	}[initials.upper()]
+def get_bt_stage(initials):
+	initials = initials.upper()
+	if initials in ["TD", "TS", "HU"]: return "Tropical Cyclone"
+	elif initials in ["SD", "SS"]: return "Subtropical Cyclone"
+	elif initials in["EX", "LO", "DB", "WV"]: return "Extratropical Cyclone"
+
+
+def get_atcf_stage(initials):
+	initials = initials.upper()
+	if initials in ["TY", "TD", "TS", "ST", "TC", "HU", "XX"]: return "Tropical Cyclone"
+	elif initials in ["SD", "SS"]: return "Subtropical Cyclone"
+	elif initials in ["EX", "MD", "IN", "DS", "LO", "WV", "ET"]: return "Extratropical Cyclone"
 
 
 def get_shape(stage):
@@ -165,12 +165,38 @@ def btfile():
 					"latitude": cols[4],
 					"longitude": cols[5],
 					"speed": float(cols[6]),
-					"stage": get_stage(cols[3])
+					"stage": get_bt_stage(cols[3])
 				}
 			)
 	
 	make_map(parsed, "small").save("tempFile.png")
 	return send_file("tempFile.png")
+
+
+@app.route("/api/atcf",  methods=["POST"])
+def atcf():	
+	data = request.json.split("\n")
+
+	parsed = []
+	for line in data:
+		cols = line.split(", ")
+		latitude = cols[6]
+		latitude[-2] = "."+latitude[-2]
+		longitude = cols[7]
+		longitude[-2] = "."+longitude[-2]
+		parsed.append(
+			{
+				"name": cols[1],
+				"latitude": latitude,
+				"longitude": longitude,
+				"speed": float(cols[8]),
+				"stage": get_atcf_stage(cols[10])
+			}
+		)
+	
+	make_map(parsed, "small").save("tempFile.png")
+	return send_file("tempFile.png")
+
 
 
 @app.route("/favicon.ico")
