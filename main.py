@@ -27,6 +27,24 @@ def get_atcf_stage(initials):
 	elif initials in ["EX", "MD", "IN", "DS", "LO", "WV", "ET", "DB"]: return "Extratropical Cyclone"
 
 
+def get_ibtracs_stage(initials):
+	initials = initials.upper()
+	if initials in ["TS", "NR", "MX"]: return "Tropical Cyclone"
+	elif initials == "SS": return "Subtropical Cyclone"
+	elif initials in ["ET", "DS"]: return "Extratropical Cyclone"
+
+
+def sshs_to_speed(num):
+	if num == "-5": return 0
+	elif num in["-4", "-3", "-1"]: return 34
+	elif num in ["-2", "0"]: return 64
+	elif num == "1": return 83
+	elif num == "2": return 96
+	elif num == "3": return 113
+	elif num == "4": return 137
+	elif num == "5": return 138
+	else: return 0
+
 def get_shape(stage):
 	return {
 		"extratropical cyclone": "triangle",
@@ -190,6 +208,28 @@ def atcf():
 			}
 		)
 	
+	make_map(parsed, "small").save("tempFile.png")
+	return send_file("tempFile.png")
+
+
+@app.route("/api/ibtracs", methods=["POST"])
+def ibtracs():
+	data = request.json.split("\n")[2:]
+
+	parsed = []
+	for line in data:
+		if line != "":
+			cols = line.split(",")
+			parsed.append(
+				{
+					"name": cols[0],
+					"latitude": cols[8]+"N",
+					"longitude": cols[9]+"E",
+					"speed": sshs_to_speed(cols[25]),
+					"stage": get_ibtracs_stage(cols[7])
+				}
+			)
+
 	make_map(parsed, "small").save("tempFile.png")
 	return send_file("tempFile.png")
 
