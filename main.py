@@ -13,60 +13,72 @@ map_small = Image.open("map-small.jpg")
 map_medium = Image.open("map-medium.jpg")
 
 
-def get_hurdat_stage(initials):
+def get_hurdat_shape(initials):
 	initials = initials.upper()
-	if initials in ["TD", "TS", "HU"]: return "Tropical Cyclone"
-	elif initials in ["SD", "SS"]: return "Subtropical Cyclone"
-	elif initials in["EX", "LO", "DB", "WV"]: return "Extratropical Cyclone"
+	if initials in ["TD", "TS", "HU"]: return "circle"
+	elif initials in ["SD", "SS"]: return "square"
+	elif initials in["EX", "LO", "DB", "WV"]: return "triangle"
 
 
-def get_atcf_stage(initials):
+def get_atcf_shape(initials):
 	initials = initials.upper()
-	if initials in ["TY", "TD", "TS", "ST", "TC", "HU", "XX"]: return "Tropical Cyclone"
-	elif initials in ["SD", "SS"]: return "Subtropical Cyclone"
-	elif initials in ["EX", "MD", "IN", "DS", "LO", "WV", "ET", "DB"]: return "Extratropical Cyclone"
+	if initials in ["TY", "TD", "TS", "ST", "TC", "HU", "XX"]: return "circle"
+	elif initials in ["SD", "SS"]: return "square"
+	elif initials in ["EX", "MD", "IN", "DS", "LO", "WV", "ET", "DB"]: return "triangle"
 
 
-def get_ibtracs_stage(initials):
+def get_ibtracs_shape(initials):
 	initials = initials.upper()
-	if initials in ["TS", "NR", "MX"]: return "Tropical Cyclone"
-	elif initials == "SS": return "Subtropical Cyclone"
-	elif initials in ["ET", "DS"]: return "Extratropical Cyclone"
+	if initials in ["TS", "NR", "MX"]: return "circle"
+	elif initials == "SS": return "square"
+	elif initials in ["ET", "DS"]: return "triangle"
 
 
-def get_rsmc_stage(num):
-	if num in ["2", "3", "4", "9"]: return "Tropical Cyclone"
-	elif num in ["5", "7"]: return "Subtropical Cyclone"
-	elif num == "6": return "Extratropical Cyclone"
+def get_rsmc_shape(num):
+	if num in ["2", "3", "4", "9"]: return "circle"
+	elif num in ["5", "7"]: return "square"
+	elif num == "6": return "triangle"
 
 
-def sshs_to_speed(num):
-	if num == "-5": return 0
-	elif num in["-4", "-3", "-1"]: return 34
-	elif num in ["-2", "0"]: return 64
-	elif num == "1": return 83
-	elif num == "2": return 96
-	elif num == "3": return 113
-	elif num == "4": return 137
-	elif num == "5": return 138
-	else: return 0
-
-def get_shape(stage):
+def stage_to_shape(stage):
+	if stage == "": return ""
 	return {
 		"extratropical cyclone": "triangle",
 		"subtropical cyclone": "square",
 		"tropical cyclone": "circle"
 	}[stage.lower()]
 
-def get_colour(speed):
-	if speed == 0: return (192, 192, 192)
-	elif speed <= 34: return (94, 186, 255)
-	elif speed <= 64: return (0, 250, 244)
-	elif speed <= 83: return (255, 255, 204)
-	elif speed <= 96: return (255, 231, 117)
-	elif speed <= 113: return (255, 193, 64)
-	elif speed <= 137: return (255, 143, 32)
+
+
+def ibtracs_sshs_to_cat(num):
+	if num in["-4", "-3", "-1"]: return -2
+	elif num in ["-2", "0"]: return -1
+	elif int(num) > 0 and int(num) < 6: return int(num)
+	else: return -999
+
+
+def speed_to_cat(speed):
+	if speed == 0: return -999
+	elif speed <= 34: return -2
+	elif speed <= 64: return -1
+	elif speed <= 83: return 1
+	elif speed <= 96: return 2
+	elif speed <= 113: return 3
+	elif speed <= 137: return 4
+	else: return 5
+
+
+
+def cat_to_colour(cat):
+	if cat == -999: return (192, 192, 192)
+	elif cat == -2: return (94, 186, 255)
+	elif cat == -1: return (0, 250, 244)
+	elif cat == 1: return (255, 255, 204)
+	elif cat == 2: return (255, 231, 117)
+	elif cat == 3: return (255, 193, 64)
+	elif cat == 4: return (255, 143, 32)
 	else: return (255, 96, 96)
+
 
 
 def make_map(tracks, size):
@@ -79,7 +91,6 @@ def make_map(tracks, size):
 	for i in tracks:
 		i["longitude"] = FULL_WIDTH/2 - float(i["longitude"][:-1]) * (-1 if i["longitude"][-1] == "E" else 1) / 360 * FULL_WIDTH
 		i["latitude"] = FULL_HEIGHT/2 - float(i["latitude"][:-1]) * (-1 if i["latitude"][-1] == "S" else 1) / 180 * FULL_HEIGHT
-		i["speed"] = float(i["speed"])
 
 	# cropping and resizing ==============================================
 
@@ -120,7 +131,7 @@ def make_map(tracks, size):
 	new_map = new_map.resize((round(new_map.size[0] * ZOOM), round(new_map.size[1] * ZOOM)))
 
 
-	# drawing =============================================================	
+	# drawing =============================================================
 
 	draw = ImageDraw.Draw(new_map)
 	zoom_width, zoom_height = new_map.size
@@ -141,8 +152,8 @@ def make_map(tracks, size):
 
 		current = ""
 		for marker in tracks:
-			if marker["stage"] != "" and current != marker["stage"]: current = marker["stage"]
-			shape = get_shape(current)
+			if marker["shape"] != "" and current != marker["shape"]: current = marker["shape"]
+			shape = marker["shape"]
 
 			if shape == "triangle":
 				triangle_coordinates = (
@@ -153,7 +164,7 @@ def make_map(tracks, size):
 					marker["longitude"] + round(DOT_SIZE/2*ZOOM),
 					marker["latitude"] + round(DOT_SIZE/2*ZOOM)
 				)
-				draw.polygon(triangle_coordinates, fill=get_colour(marker["speed"]))
+				draw.polygon(triangle_coordinates, fill=cat_to_colour(marker["category"]))
 				continue
 
 			coordinates = (
@@ -162,8 +173,8 @@ def make_map(tracks, size):
 				marker["longitude"] + round(DOT_SIZE/2*ZOOM),
 				marker["latitude"] + round(DOT_SIZE/2*ZOOM)
 			)
-			if shape == "square": draw.rectangle(coordinates, fill=get_colour(marker["speed"]))
-			elif shape == "circle": draw.ellipse(coordinates, fill=get_colour(marker["speed"]))
+			if shape == "square": draw.rectangle(coordinates, fill=cat_to_colour(marker["category"]))
+			elif shape == "circle": draw.ellipse(coordinates, fill=cat_to_colour(marker["category"]))
 
 	return new_map.resize((zoom_width, zoom_height), resample=Image.ANTIALIAS) # anti aliasing
 
@@ -179,9 +190,15 @@ def main():
 def gen_tracker():
 	tracks = request.json
 
-	if tracks == None: abort(400)	
+	if tracks == None: abort(400)
 
 	size = request.args.get("size", "small")
+
+	for i in tracks:
+		i["category"] = speed_to_cat(float(i["speed"]))
+		i["shape"] = stage_to_shape(i["stage"])
+		del i["speed"]
+		del i["stage"]
 
 	make_map(tracks, size).save("tempFile.png")
 	return send_file("tempFile.png")
@@ -203,8 +220,8 @@ def hurdat():
 					"name": unique_id,
 					"latitude": cols[4],
 					"longitude": cols[5],
-					"speed": float(cols[6]),
-					"stage": get_hurdat_stage(cols[3])
+					"category": speed_to_cat(float(cols[6])),
+					"shape": get_hurdat_shape(cols[3])
 				}
 			)
 	
@@ -224,8 +241,8 @@ def atcf():
 				"name": cols[1],
 				"latitude": cols[6][:-2]+"."+cols[6][-2:],
 				"longitude": cols[7][:-2]+"."+cols[7][-2:],
-				"speed": float(cols[8]),
-				"stage": get_atcf_stage(cols[10])
+				"category": speed_to_cat(float(cols[8])),
+				"shape": get_atcf_shape(cols[10])
 			}
 		)
 	
@@ -246,8 +263,8 @@ def ibtracs():
 					"name": cols[0],
 					"latitude": cols[8]+"N",
 					"longitude": cols[9]+"E",
-					"speed": sshs_to_speed(cols[25]),
-					"stage": get_ibtracs_stage(cols[7])
+					"category": ibtracs_sshs_to_cat(cols[25]),
+					"shape": get_ibtracs_shape(cols[7])
 				}
 			)
 
@@ -276,8 +293,8 @@ def rsmc():
 					"name": unique_id,
 					"latitude": cols[3][:-1]+"."+cols[3][-1:]+"N",
 					"longitude": cols[4][:-1]+"."+cols[4][-1:]+"E",
-					"speed": float(cols[6]),
-					"stage": get_rsmc_stage(cols[2])
+					"category": speed_to_cat(float(cols[6])),
+					"shape": get_rsmc_shape(cols[2])
 				}
 			)
 
