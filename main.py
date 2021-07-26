@@ -81,8 +81,8 @@ def cat_to_colour(cat):
 
 
 def make_map(tracks, size):
-	if size == "medium": map, DOT_SIZE = map_medium, 30
-	else: map, DOT_SIZE = map_small, 10
+	if size == "medium": map, DOT_SIZE = map_medium, 39
+	else: map, DOT_SIZE = map_small, 13
 
 	FULL_WIDTH, FULL_HEIGHT = map.size
 
