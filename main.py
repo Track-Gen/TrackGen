@@ -90,10 +90,25 @@ def make_map(tracks, size):
 	min_latitude = min(i["latitude"] for i in tracks)
 	max_latitude = max(i["latitude"] for i in tracks)
 
-	top = min_latitude - FULL_HEIGHT/35
-	left = min_longitude - FULL_WIDTH/55
-	bottom = max_latitude + FULL_HEIGHT/35
-	right = max_longitude + FULL_WIDTH/55
+	top = min_latitude - FULL_HEIGHT * 5/180
+	left = min_longitude - FULL_WIDTH * 5/360
+	bottom = max_latitude + FULL_HEIGHT * 5/180
+	right = max_longitude + FULL_WIDTH * 5/360
+
+	if right - left < FULL_HEIGHT*45/180:
+		padding = (FULL_HEIGHT*45/180 - (right-left)) / 2
+		right += padding
+		left -= padding
+	
+	if right - left < bottom - top:
+		padding = ((bottom-top) - (right-left)) / 2
+		right += padding
+		left -= padding
+
+	if bottom - top < (right-left) / 1.618033988749894:
+		padding = ((right-left) / 1.618033988749894 - (bottom-top)) / 2
+		bottom += padding
+		top -= padding
 
 	if left < 0: left = 0
 	if top < 0: top = 0
@@ -121,7 +136,7 @@ def make_map(tracks, size):
 		draw.line(
 			[(marker["longitude"], marker["latitude"]) for marker in tracks],
 			fill="white",
-			width=round(DOT_SIZE/5)
+			width=round(DOT_SIZE/3)
 		)
 
 		current = ""
