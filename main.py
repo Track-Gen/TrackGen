@@ -34,6 +34,12 @@ def get_ibtracs_stage(initials):
 	elif initials in ["ET", "DS"]: return "Extratropical Cyclone"
 
 
+def get_rsmc_stage(num):
+	if num in ["2", "3", "4", "9"]: return "Tropical Cyclone"
+	elif num in ["5", "7"]: return "Subtropical Cyclone"
+	elif num == "6": return "Extratropical Cyclone"
+
+
 def sshs_to_speed(num):
 	if num == "-5": return 0
 	elif num in["-4", "-3", "-1"]: return 34
@@ -77,7 +83,7 @@ def make_map(tracks, size):
 
 	# cropping and resizing ==============================================
 
-	ZOOM = 2
+	ZOOM = 3
 
 	min_longitude = min(i["longitude"] for i in tracks)
 	max_longitude = max(i["longitude"] for i in tracks)
@@ -167,7 +173,7 @@ def gen_tracker():
 
 
 @app.route("/api/hurdat", methods=["POST"])
-def btfile():
+def hurdat():
 	data = request.json.split("\n")
 
 	parsed = []
@@ -227,6 +233,36 @@ def ibtracs():
 					"longitude": cols[9]+"E",
 					"speed": sshs_to_speed(cols[25]),
 					"stage": get_ibtracs_stage(cols[7])
+				}
+			)
+
+	make_map(parsed, "small").save("tempFile.png")
+	return send_file("tempFile.png")
+
+
+@app.route("/api/rsmc", methods=["POST"])
+def rsmc():	
+	data = request.json.split("\n")
+
+
+	unique_id = []
+	parsed = []
+	for line in data:
+		cols = line.split(" ")
+		cleaned_cols = []
+		for col in cols:
+			if col != "": cleaned_cols.append(col)
+		cols = cleaned_cols
+		if len(cols) == 9:
+			unique_id = cols[1]
+		else:
+			parsed.append(
+				{
+					"name": unique_id,
+					"latitude": cols[3][:-1]+"."+cols[3][-1:]+"N",
+					"longitude": cols[4][:-1]+"."+cols[4][-1:]+"E",
+					"speed": float(cols[6]),
+					"stage": get_rsmc_stage(cols[2])
 				}
 			)
 
