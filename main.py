@@ -35,8 +35,7 @@ def get_ibtracs_shape(initials):
 
 
 def get_rsmc_shape(num):
-	if num in ["2", "3", "4", "9"]: return "circle"
-	elif num in ["5", "7"]: return "square"
+	if num in ["2", "3", "4", "5", "7", "9"]: return "circle"
 	elif num == "6": return "triangle"
 
 
@@ -176,7 +175,7 @@ def make_map(tracks, size):
 			if shape == "square": draw.rectangle(coordinates, fill=cat_to_colour(marker["category"]))
 			elif shape == "circle": draw.ellipse(coordinates, fill=cat_to_colour(marker["category"]))
 
-	return new_map.resize((zoom_width, zoom_height), resample=Image.ANTIALIAS) # anti aliasing
+	return new_map.resize((round(zoom_width//1.25), round(zoom_height//1.25)), resample=Image.ANTIALIAS) # anti aliasing
 
 
 app = Flask(__name__)
