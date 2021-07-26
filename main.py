@@ -146,7 +146,7 @@ def make_map(tracks, size):
 		draw.line(
 			[(marker["longitude"], marker["latitude"]) for marker in tracks],
 			fill="white",
-			width=round(DOT_SIZE/3)
+			width=round(DOT_SIZE/2)
 		)
 
 		current = ""
