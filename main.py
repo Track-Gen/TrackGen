@@ -155,25 +155,33 @@ def make_map(tracks, size):
 			shape = marker["shape"]
 
 			if shape == "triangle":
-				triangle_coordinates = (
+				coordinates = (
 					marker["longitude"],
-					marker["latitude"] - round(DOT_SIZE/2*ZOOM),
+					marker["latitude"] - round(DOT_SIZE/2.6*ZOOM),
+					marker["longitude"] - round(DOT_SIZE/2.6*ZOOM),
+					marker["latitude"] + round(DOT_SIZE/2.6*ZOOM),
+					marker["longitude"] + round(DOT_SIZE/2.6*ZOOM),
+					marker["latitude"] + round(DOT_SIZE/2.6*ZOOM)
+				)
+				draw.polygon(coordinates, fill=cat_to_colour(marker["category"]))
+			
+			elif shape == "square":
+				coordinates = (
+					marker["longitude"] - round(DOT_SIZE/2.6*ZOOM),
+					marker["latitude"] - round(DOT_SIZE/2.6*ZOOM),
+					marker["longitude"] + round(DOT_SIZE/2.6*ZOOM),
+					marker["latitude"] + round(DOT_SIZE/2.6*ZOOM)
+				)
+				draw.rectangle(coordinates, fill=cat_to_colour(marker["category"]))
+
+			elif shape == "circle":
+				coordinates = (
 					marker["longitude"] - round(DOT_SIZE/2*ZOOM),
-					marker["latitude"] + round(DOT_SIZE/2*ZOOM),
+					marker["latitude"] - round(DOT_SIZE/2*ZOOM),
 					marker["longitude"] + round(DOT_SIZE/2*ZOOM),
 					marker["latitude"] + round(DOT_SIZE/2*ZOOM)
 				)
-				draw.polygon(triangle_coordinates, fill=cat_to_colour(marker["category"]))
-				continue
-
-			coordinates = (
-				marker["longitude"] - round(DOT_SIZE/2*ZOOM),
-				marker["latitude"] - round(DOT_SIZE/2*ZOOM),
-				marker["longitude"] + round(DOT_SIZE/2*ZOOM),
-				marker["latitude"] + round(DOT_SIZE/2*ZOOM)
-			)
-			if shape == "square": draw.rectangle(coordinates, fill=cat_to_colour(marker["category"]))
-			elif shape == "circle": draw.ellipse(coordinates, fill=cat_to_colour(marker["category"]))
+				draw.ellipse(coordinates, fill=cat_to_colour(marker["category"]))
 
 	return new_map.resize((round(zoom_width//1.25), round(zoom_height//1.25)), resample=Image.ANTIALIAS) # anti aliasing
 
