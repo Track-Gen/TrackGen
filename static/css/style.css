@@ -311,7 +311,7 @@ select, button {
 }
 
 #image-container #loader {
-	margin: 40vh 40vw;
+	margin: 45vh 45vw;
 	width: 10vw;
 	height: 10vh;
 	object-fit: contain;
