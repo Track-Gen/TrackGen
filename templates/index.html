@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width">
 		<title>TrackGen</title>
-		<link href="/static/css/style.css?v2" rel="stylesheet" type="text/css" />
+		<link href="/static/css/style.css?v3" rel="stylesheet" type="text/css" />
 	</head>
 	<body>
 		<main>			
@@ -62,6 +62,10 @@
 									<option value="Tropical cyclone">Tropical cyclone</option>
 								</select>
 							</div>
+
+							<div>
+								<button type="button" class="remove"><ion-icon name="close-circle-outline"></ion-icon> <span>Remove Point</span></button>
+							</div>
 						</div>
 					</div>
 
@@ -102,9 +106,9 @@
 		<div id="image-container" class="hidden"><img id="loader" src="/static/media/cyclone.png" alt="loading"><img id="output" class="hidden" alt="track map"><button id="close"><ion-icon name="close-outline"></ion-icon></button></div>
 		
 		<script src="/static/js/pages.js"></script>
-		<script src="/static/js/file_upload.js?v2"></script>
-		<script src="/static/js/new_point.js?v1"></script>
+		<script src="/static/js/new_point.js?v2"></script>
 		<script src="/static/js/get_track.js?v4"></script>
+		<script src="/static/js/file_upload.js?v2"></script>
 		<script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
 		
 		<a title="Real Time Web Analytics" href="http://clicky.com/101324801"><img alt="Clicky" src="//static.getclicky.com/media/links/badge.gif" border="0" /></a>

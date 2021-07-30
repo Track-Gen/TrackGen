@@ -27,7 +27,7 @@ body, html {
 }
 
 ion-icon {
-	transform: scale(1.25);
+	transform: scale(1.25) translateY(-1%);
 	vertical-align: middle;
 }
 
@@ -94,7 +94,7 @@ main {
 
 #inputs .point, #headers {
 	display: grid;
-	grid-template-columns: repeat(5, 1fr);
+	grid-template-columns: repeat(6, 1fr);
 	gap: 5px;
 }
 
@@ -149,6 +149,26 @@ input:focus, select:focus, button:focus, textarea:focus {
 	text-align-last: center;
 }
 
+#inputs .remove {
+	height: 100%;
+	width: 100%;
+	font-size: 1.5vw;
+	line-height: 1.5vw;
+	border: none;
+	border-radius: 5px;
+	padding: 5px 10px;
+	vertical-align: middle;
+	color: #c00;
+	background-color: #fff;
+	transition: all 0.3s;
+}
+
+#inputs .remove:hover {
+	cursor: pointer;
+	color: #fff;
+	background-color: #c00;
+}
+
 select, button {
 	font-family: 'Raleway', sans-serif;
 }
@@ -177,7 +197,7 @@ select, button {
 	cursor: pointer;
 }
 
-#new-point span {
+#new-point span, ion-icon+span {
 	vertical-align: middle;
 }
 
