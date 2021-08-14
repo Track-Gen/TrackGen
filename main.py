@@ -15,7 +15,7 @@ map_medium = Image.open("map-medium.jpg")
 
 def get_hurdat_shape(initials):
 	initials = initials.upper()
-	if initials in ["TD", "TS", "HU"]: return "circle"
+	if initials in ["TD", "TS", "HU", "TY"]: return "circle"
 	elif initials in ["SD", "SS"]: return "square"
 	elif initials in["EX", "LO", "DB", "WV"]: return "triangle"
 
