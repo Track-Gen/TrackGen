@@ -81,15 +81,18 @@ def cat_to_colour(cat):
 
 
 def make_map(tracks, size):
-	if size == "medium": map, DOT_SIZE = map_medium, 39
-	else: map, DOT_SIZE = map_small, 13
+	if size == "medium": map = map_medium
+	else: map = map_small
 
 	FULL_WIDTH, FULL_HEIGHT = map.size
 
+	DOT_SIZE = 0.87890625 / 360 * FULL_WIDTH
+	LINE_SIZE = 0.25 / 360 * FULL_WIDTH
+
 
 	for i in tracks:
-		i["longitude"] = FULL_WIDTH/2 - float(i["longitude"][:-1]) * (-1 if i["longitude"][-1] == "E" else 1) / 360 * FULL_WIDTH
-		i["latitude"] = FULL_HEIGHT/2 - float(i["latitude"][:-1]) * (-1 if i["latitude"][-1] == "S" else 1) / 180 * FULL_HEIGHT
+		i["longitude"] = FULL_WIDTH/2 - float(i["longitude"][:-1]) % 180 * (-1 if i["longitude"][-1] == "E" else 1) / 360 * FULL_WIDTH
+		i["latitude"] = FULL_HEIGHT/2 - float(i["latitude"][:-1]) % 90 * (-1 if i["latitude"][-1] == "S" else 1) / 180 * FULL_HEIGHT
 
 	# cropping and resizing ==============================================
 
@@ -146,7 +149,7 @@ def make_map(tracks, size):
 		draw.line(
 			[(marker["longitude"], marker["latitude"]) for marker in tracks],
 			fill="white",
-			width=round(DOT_SIZE/2)
+			width=round(LINE_SIZE)
 		)
 
 		current = ""
@@ -155,31 +158,34 @@ def make_map(tracks, size):
 			shape = marker["shape"]
 
 			if shape == "triangle":
+				side = DOT_SIZE * 3 ** 0.5;
+				bis = side * 3 ** 0.5 / 2;
 				coordinates = (
 					marker["longitude"],
-					marker["latitude"] - round(DOT_SIZE/2.6*ZOOM),
-					marker["longitude"] - round(DOT_SIZE/2.6*ZOOM),
-					marker["latitude"] + round(DOT_SIZE/2.6*ZOOM),
-					marker["longitude"] + round(DOT_SIZE/2.6*ZOOM),
-					marker["latitude"] + round(DOT_SIZE/2.6*ZOOM)
+					marker["latitude"] - bis * 2 / 3,
+					marker["longitude"] - side / 2,
+					marker["latitude"] + bis / 3,
+					marker["longitude"] + side / 2,
+					marker["latitude"] + bis / 3
 				)
 				draw.polygon(coordinates, fill=cat_to_colour(marker["category"]))
 			
 			elif shape == "square":
+				size = DOT_SIZE / 2 ** 0.5
 				coordinates = (
-					marker["longitude"] - round(DOT_SIZE/2.6*ZOOM),
-					marker["latitude"] - round(DOT_SIZE/2.6*ZOOM),
-					marker["longitude"] + round(DOT_SIZE/2.6*ZOOM),
-					marker["latitude"] + round(DOT_SIZE/2.6*ZOOM)
+					marker["longitude"] - size,
+					marker["latitude"] - size,
+					marker["longitude"] + size,
+					marker["latitude"] + size
 				)
 				draw.rectangle(coordinates, fill=cat_to_colour(marker["category"]))
 
 			elif shape == "circle":
 				coordinates = (
-					marker["longitude"] - round(DOT_SIZE/2*ZOOM),
-					marker["latitude"] - round(DOT_SIZE/2*ZOOM),
-					marker["longitude"] + round(DOT_SIZE/2*ZOOM),
-					marker["latitude"] + round(DOT_SIZE/2*ZOOM)
+					marker["longitude"] - DOT_SIZE,
+					marker["latitude"] - DOT_SIZE,
+					marker["longitude"] + DOT_SIZE,
+					marker["latitude"] + DOT_SIZE
 				)
 				draw.ellipse(coordinates, fill=cat_to_colour(marker["category"]))
 
