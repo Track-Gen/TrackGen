@@ -72,11 +72,11 @@ def cat_to_colour(cat):
 	if cat == -999: return (192, 192, 192)
 	elif cat == -2: return (94, 186, 255)
 	elif cat == -1: return (0, 250, 244)
-	elif cat == 1: return (255, 255, 204)
-	elif cat == 2: return (255, 231, 117)
-	elif cat == 3: return (255, 193, 64)
-	elif cat == 4: return (255, 143, 32)
-	else: return (255, 96, 96)
+	elif cat == 1: return (255, 247, 149)
+	elif cat == 2: return (255, 216, 33)
+	elif cat == 3: return (255, 143, 32)
+	elif cat == 4: return (255, 96, 96)
+	else: return (196, 100, 217)
 
 
 
