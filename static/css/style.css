@@ -211,7 +211,7 @@ select, button {
 	margin-top: 2.25vh;
 	width: 100%;
 	font-size: 4vh;
-	padding: 2.25vh 0;
+	padding: 1.85vh 0;
 	text-align: center;
 	border: none;
 	border-radius: 15px;
@@ -233,7 +233,7 @@ select, button {
 
 
 #page2-content {
-	height: 100%;
+	height: 90%;
 	width: 100%;
 	display: grid;
 	grid-template-rows: 4fr 1fr;
@@ -385,4 +385,14 @@ select, button {
 
 a:last-of-type {
 	display: none;
+}
+
+#accessible-container {
+	color: var(--foreground-1);
+	font-size: 20px;
+}
+
+#accessible-container * {
+	vertical-align: middle;
+	margin-left: 5px;
 }

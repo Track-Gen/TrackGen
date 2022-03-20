@@ -68,19 +68,29 @@ def speed_to_cat(speed):
 
 
 
-def cat_to_colour(cat):
-	if cat == -999: return (192, 192, 192)
-	elif cat == -2: return (94, 186, 255)
-	elif cat == -1: return (0, 250, 244)
-	elif cat == 1: return (255, 247, 149)
-	elif cat == 2: return (255, 216, 33)
-	elif cat == 3: return (255, 143, 32)
-	elif cat == 4: return (255, 96, 96)
-	else: return (196, 100, 217)
+def cat_to_colour(cat, accessible):
+	if accessible:
+		if cat == -999: return (192, 192, 192)
+		elif cat == -2: return (94, 186, 255)
+		elif cat == -1: return (0, 250, 244)
+		elif cat == 1: return (255, 247, 149)
+		elif cat == 2: return (255, 216, 33)
+		elif cat == 3: return (255, 143, 32)
+		elif cat == 4: return (255, 96, 96)
+		else: return (196, 100, 217)
+	else:
+		if cat == -999: return (192, 192, 192)
+		elif cat == -2: return (94, 186, 255)
+		elif cat == -1: return (0, 250, 244)
+		elif cat == 1: return (255, 255, 204)
+		elif cat == 2: return (255, 231, 117)
+		elif cat == 3: return (255, 193, 64)
+		elif cat == 4: return (255, 143, 32)
+		else: return (255, 96, 96)
 
 
 
-def make_map(tracks, size):
+def make_map(tracks, size, accessible):
 	if size == "medium": map = map_medium
 	else: map = map_small
 
@@ -168,7 +178,7 @@ def make_map(tracks, size):
 					marker["longitude"] + side / 2,
 					marker["latitude"] + bis / 3
 				)
-				draw.polygon(coordinates, fill=cat_to_colour(marker["category"]))
+				draw.polygon(coordinates, fill=cat_to_colour(marker["category"], accessible))
 			
 			elif shape == "square":
 				size = DOT_SIZE / 2 ** 0.5
@@ -178,7 +188,7 @@ def make_map(tracks, size):
 					marker["longitude"] + size,
 					marker["latitude"] + size
 				)
-				draw.rectangle(coordinates, fill=cat_to_colour(marker["category"]))
+				draw.rectangle(coordinates, fill=cat_to_colour(marker["category"], accessible))
 
 			elif shape == "circle":
 				coordinates = (
@@ -187,7 +197,7 @@ def make_map(tracks, size):
 					marker["longitude"] + DOT_SIZE,
 					marker["latitude"] + DOT_SIZE
 				)
-				draw.ellipse(coordinates, fill=cat_to_colour(marker["category"]))
+				draw.ellipse(coordinates, fill=cat_to_colour(marker["category"], accessible))
 
 	return new_map.resize((round(zoom_width//1.25), round(zoom_height//1.25)), resample=Image.ANTIALIAS) # anti aliasing
 
@@ -207,19 +217,31 @@ def gen_tracker():
 
 	size = request.args.get("size", "small")
 
+	accessible = request.args.get("accessible", "false").lower()
+	if accessible not in["true", "false"]:
+		accessible = False
+	else:
+		accessible = [True, False][["true", "false"].index(accessible)]
+
 	for i in tracks:
 		i["category"] = speed_to_cat(float(i["speed"]))
 		i["shape"] = stage_to_shape(i["stage"])
 		del i["speed"]
 		del i["stage"]
 
-	make_map(tracks, size).save("tempFile.png")
+	make_map(tracks, size, accessible).save("tempFile.png")
 	return send_file("tempFile.png")
 
 
 @app.route("/api/hurdat", methods=["POST"])
 def hurdat():
 	data = request.json.split("\n")
+
+	accessible = request.args.get("accessible", "false").lower()
+	if accessible not in["true", "false"]:
+		accessible = False
+	else:
+		accessible = [True, False][["true", "false"].index(accessible)]
 
 	parsed = []
 	unique_id = ""
@@ -238,13 +260,19 @@ def hurdat():
 				}
 			)
 	
-	make_map(parsed, "medium").save("tempFile.png")
+	make_map(parsed, "medium", accessible).save("tempFile.png")
 	return send_file("tempFile.png")
 
 
 @app.route("/api/atcf",  methods=["POST"])
 def atcf():	
 	data = request.json.split("\n")
+
+	accessible = request.args.get("accessible", "false").lower()
+	if accessible not in["true", "false"]:
+		accessible = False
+	else:
+		accessible = [True, False][["true", "false"].index(accessible)]
 
 	parsed = []
 	for line in data:
@@ -259,13 +287,19 @@ def atcf():
 			}
 		)
 	
-	make_map(parsed, "medium").save("tempFile.png")
+	make_map(parsed, "medium", accessible).save("tempFile.png")
 	return send_file("tempFile.png")
 
 
 @app.route("/api/ibtracs", methods=["POST"])
 def ibtracs():
 	data = request.json.split("\n")[2:]
+
+	accessible = request.args.get("accessible", "false").lower()
+	if accessible not in["true", "false"]:
+		accessible = False
+	else:
+		accessible = [True, False][["true", "false"].index(accessible)]
 
 	parsed = []
 	for line in data:
@@ -281,13 +315,19 @@ def ibtracs():
 				}
 			)
 
-	make_map(parsed, "medium").save("tempFile.png")
+	make_map(parsed, "medium", accessible).save("tempFile.png")
 	return send_file("tempFile.png")
 
 
 @app.route("/api/rsmc", methods=["POST"])
 def rsmc():	
 	data = request.json.split("\n")
+
+	accessible = request.args.get("accessible", "false").lower()
+	if accessible not in["true", "false"]:
+		accessible = False
+	else:
+		accessible = [True, False][["true", "false"].index(accessible)]
 
 
 	unique_id = []
@@ -311,7 +351,7 @@ def rsmc():
 				}
 			)
 
-	make_map(parsed, "medium").save("tempFile.png")
+	make_map(parsed, "medium", accessible).save("tempFile.png")
 	return send_file("tempFile.png")
 
 

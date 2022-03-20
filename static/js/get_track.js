@@ -34,7 +34,7 @@ document.querySelector("form").addEventListener("submit", (e) => {
 			speed /= 1.852;
 		}
 
-		const stage = point.children[4].children[0].getAttribute("data-selected");
+		const stage = point.children[4].children[0].getAttribute("data-selected");		
 
 		data.push({
 			name: name,
@@ -44,8 +44,10 @@ document.querySelector("form").addEventListener("submit", (e) => {
 			stage: stage
 		})
 	});
+	
+	const accessible = document.querySelector("#accessible").checked;
 
-	fetch("/api/trackgen?size="+e.target.getAttribute("data-size"),
+	fetch("/api/trackgen?size="+e.target.getAttribute("data-size")+"&accessible="+accessible,
 		{
 			method: "POST",
 			headers: {
