@@ -8,7 +8,7 @@ document.getElementById("paste-upload").addEventListener("submit", (e) => {
 	
 	const accessible = document.querySelector("#accessible").checked;
 	
-	fetch("/api/"+document.getElementById("file-format").getAttribute("data-selected").toLowerCase()+"&accessible="+accessible,
+	fetch("/api/"+document.getElementById("file-format").getAttribute("data-selected").toLowerCase()+"?accessible="+accessible,
 		{
 			method: "POST",
 			headers: {
