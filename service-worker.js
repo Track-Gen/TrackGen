@@ -1,4 +1,4 @@
-const cacheName = "cache-v1";
+const cacheName = "cache-v2";
 
 self.addEventListener('install', e => {
     e.waitUntil(
@@ -7,10 +7,10 @@ self.addEventListener('install', e => {
                 "/",
                 "/manifest.json",
                 "/index.html",
+                "/static/media/map.jpg",
                 "/static/media/favicon.png",
                 "/static/media/cyclone.png",
                 "/static/media/background.png",
-                "/static/media/map.jpg",
                 "/static/js/sw.js",
                 "/static/js/rsmc.js",
                 "/static/js/new_point.js",
@@ -22,7 +22,8 @@ self.addEventListener('install', e => {
                 "/static/js/atcf.js",
                 "/static/js/file_upload.js",
                 "/static/css/style.css"
-            ]);
+            ])
+            .then(() => {console.log("Cached files!")})
         })
     );
 });
@@ -33,8 +34,7 @@ self.addEventListener('fetch', e => {
 
         console.log('Fetching', e.request.url);
 
-        if (r && !navigator.onLine)
-            return r;
+        if (r) return r;
 
         const response = await fetch(e.request);
         const cache = await caches.open(cacheName);
