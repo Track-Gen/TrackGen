@@ -44,7 +44,17 @@ document.querySelector("#close").addEventListener("click", () => {
 
 let loaded = false;
 const BLUE_MARBLE = new Image();
-BLUE_MARBLE.src = "/static/media/map.jpg";
+
+const MAP_URL = "/static/media/map.jpg";
+caches.match(MAP_URL)
+    .then(r => {
+       if (r || confirm("This website requires you to download a ~150MB image, would you like to continue?")) {
+           BLUE_MARBLE.src = MAP_URL;
+       } else {
+           window.close();
+       }
+    });
+
 BLUE_MARBLE.onload = () => { loaded = true };
 
 function createMap(data, accessible) {

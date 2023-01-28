@@ -34,14 +34,14 @@ self.addEventListener('fetch', e => {
 
         console.log('Fetching', e.request.url);
 
-        if (r) return r;
+        if (r && (e.request.url === "https://trackgen.codingcactus.repl.co/static/media/map.jpg" || !navigator.onLine)) return r;
 
         const response = await fetch(e.request);
         const cache = await caches.open(cacheName);
 
         console.log('Caching', e.request.url);
 
-        cache.put(e.request, response.clone());
+        await cache.put(e.request, response.clone());
 
         return response;
     })());
