@@ -35,8 +35,8 @@ function handle_removal(button){
 document.querySelectorAll("#inputs .remove").forEach(button => { handle_removal(button) })
 
 
-document.getElementById("new-point").addEventListener("click", () => {
-	const inputs = document.getElementById("inputs");
+document.querySelector("#new-point").addEventListener("click", () => {
+	const inputs = document.querySelector("#inputs");
 	let new_inputs = document.querySelectorAll(".point");
 	new_inputs = new_inputs[new_inputs.length-1].cloneNode(true);
 	new_inputs.children[1].children[0].value = "";

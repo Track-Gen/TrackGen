@@ -201,13 +201,8 @@ select, button {
 	vertical-align: middle;
 }
 
-#gens {
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	gap: 1vw;
-}
-
 .generate {
+	display: block;
 	margin-top: 2.25vh;
 	width: 100%;
 	font-size: 4vh;
@@ -217,7 +212,6 @@ select, button {
 	border-radius: 15px;
 	color: var(--foreground-1);
 	background-color: #fff;
-	white-space: break-spaces;
 	transition: all 0.3s;
 }
 
@@ -324,10 +318,17 @@ select, button {
 }
 
 #image-container #output {
+	display: flex;
+	align-content: center;
+	justify-content: center;
 	margin: 5vh 5vw;
 	width: 90vw;
 	height: 90vh;
-	object-fit: contain;
+}
+
+#image-container #output canvas {
+	max-width: 100%;
+	max-height: 100%;
 }
 
 #image-container #loader {

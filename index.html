@@ -4,7 +4,8 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width">
 		<title>TrackGen</title>
-		<link href="/static/css/style.css?v3" rel="stylesheet" type="text/css" />
+		<link href="static/css/style.css?v4" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" href="static/css/style.css">
 	</head>
 	<body>
 		<main>			
@@ -71,10 +72,11 @@
 
 					<button type="button" id="new-point"><ion-icon name="add-circle-outline"></ion-icon> <span>New Point</span></button>
 				
-				<div id="gens">
-					<button class="generate" type="submit" data-size="small"><ion-icon name="analytics-outline"></ion-icon> <span>Generate Map - normal</span></button>
-					<button class="generate" type="submit" data-size="medium"><ion-icon name="analytics-outline"></ion-icon> <span>Generate Map - large</span></button>
-				</div>
+
+					<button class="generate" type="submit">
+						<ion-icon name="analytics-outline"></ion-icon>
+						<span>Generate Map</span>
+					</button>
 				</form>
 			</div>
 
@@ -102,15 +104,31 @@
 				</div>
 			</div>
 
-			<div id="accessible-container"><input type="checkbox" id="accessible"><label for="accessible">Use accessible  colours</label></div>
+			<div id="accessible-container">
+				<input type="checkbox" id="accessible"><label for="accessible">Use accessible  colours</label>
+			</div>
 		</main>
 
-		<div id="image-container" class="hidden"><img id="loader" src="/static/media/cyclone.png" alt="loading"><img id="output" class="hidden" alt="track map"><button id="close"><ion-icon name="close-outline"></ion-icon></button></div>
+		<div id="image-container" class="hidden">
+			<img id="loader" src="/static/media/cyclone.png" alt="loading">
+			<div id="output" class="hidden"></div>
+			<button id="close">
+				<ion-icon name="close-outline"></ion-icon>
+			</button>
+		</div>
 		
-		<script src="/static/js/pages.js?v2"></script>
-		<script src="/static/js/new_point.js?v2"></script>
-		<script src="/static/js/get_track.js?v4"></script>
-		<script src="/static/js/file_upload.js?v2"></script>
+		<script src="/static/js/pages.js?v3"></script>
+		<script src="/static/js/generate.js?v1"></script>
+		<script src="/static/js/new_point.js?v3"></script>
+
+		<script src="/static/js/atcf.js?v1"></script>
+		<script src="/static/js/rsmc.js?v1"></script>
+		<script src="/static/js/hurdat.js?v1"></script>
+		<script src="/static/js/ibtracs.js?v1"></script>
+		<script src="/static/js/file_upload.js?v3"></script>
+
+		<script src="/static/js/manual_input.js?v4"></script>
+
 		<script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
 	</body>
 </html>

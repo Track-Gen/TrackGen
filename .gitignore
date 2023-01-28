@@ -1,3 +1,5 @@
-map-small.jpg
-map-medium.jpg
-tempFile.png
+static/media/map.jpg
+replit.nix
+.replit
+.config/
+.idea/
