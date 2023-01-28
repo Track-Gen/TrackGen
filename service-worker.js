@@ -1,4 +1,4 @@
-const cacheName = "cache-v2";
+const cacheName = "cache-v3";
 
 self.addEventListener('install', e => {
     e.waitUntil(
@@ -7,7 +7,6 @@ self.addEventListener('install', e => {
                 "/",
                 "/manifest.json",
                 "/index.html",
-                "/static/media/map.jpg",
                 "/static/media/favicon.png",
                 "/static/media/cyclone.png",
                 "/static/media/background.png",

@@ -51,7 +51,7 @@ caches.match(MAP_URL)
        if (r || confirm("This website requires you to download a ~150MB image, would you like to continue?")) {
            BLUE_MARBLE.src = MAP_URL;
        } else {
-           window.close();
+           document.querySelector("main").innerHTML = "<h1>Bye 👋</h1>";
        }
     });
 
