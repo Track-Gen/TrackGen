@@ -117,8 +117,12 @@ main {
 	color: #fff;
 }
 
+#inputs label span {
+	display: none;
+}
+
 #inputs input {
-	width: 60%;
+	width: 40%;
 }
 
 input, textarea {
@@ -173,8 +177,8 @@ select, button {
 	font-family: 'Raleway', sans-serif;
 }
 
-#inputs input+select {
-	width: 36%;
+#inputs label + select {
+	width: 56%;
 }
 
 
@@ -324,6 +328,7 @@ select, button {
 	margin: 5vh 5vw;
 	width: 90vw;
 	height: 90vh;
+	object-fit: contain;
 }
 
 #image-container #output canvas {
@@ -360,32 +365,63 @@ select, button {
 	cursor: pointer;
 }
 
-@media screen and (max-width: 600px) {
-	#inputs select {
-		-webkit-appearance: none;
+@media screen and (max-width: 800px) {
+	#headers {
+		display: none;
 	}
 
-	#inputs input+select {
-		width: 32%;
-	}
-
-	#inputs input, #inputs select {
-		padding: 2px 3px;
-		font-size: 2.5vw;
-		line-height: 2.5vw;
+	#inputs {
+		margin-top: 10px;
+		max-height: 56vh;
 	}
 
 	#inputs .point {
-		padding: 7px;
+		display: block;
+		word-break: normal;
 	}
 
-	#headers h3 {
-		font-size: 2vh;
+	#inputs .point > div {
+		margin: 5px 0;
 	}
-}
 
-a:last-of-type {
-	display: none;
+	#inputs .point label > span {
+		display: inline-block;
+		width: 20%;
+		font-size: 12px;
+		white-space: break-spaces;
+		vertical-align: middle;
+	}
+
+	#inputs .point input, #inputs .point select, #inputs .point button {
+		font-size: 17px;
+	}
+
+	#inputs .point :not(:first-child) input {
+		width: 55%;
+	}
+
+	#inputs .point select {
+		width: 23%;
+	}
+
+	#inputs .point .stage, #inputs .point .name {
+		width: 79%;
+	}
+
+	#new-point, .generate {
+		font-size: 23px;
+		padding: 10px 0;
+		border-radius: 7px;
+		margin-top: 10px;
+	}
+
+	#page2-content {
+		height: 96%;
+	}
+
+	#paste-upload {
+		grid-template-rows: 5fr 1fr;
+	}
 }
 
 #accessible-container {

@@ -199,7 +199,7 @@ function createMap(data, accessible) {
                 const output = document.querySelector("#output");
                 output.innerHTML = "";
                 output.classList.remove("hidden");
-                output.appendChild(canvas);
+                output.src = canvas.toDataURL();
         
                 document.querySelector("#loader").classList.add("hidden");
                 document.querySelector("#close").classList.remove("hidden");

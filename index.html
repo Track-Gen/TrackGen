@@ -29,11 +29,17 @@
 					<div id="inputs">
 						<div class="point">
 							<div>
-								<input type="text" class="name">
+								<label>
+									<span>Name: </span>
+									<input type="text" class="name">
+								</label>
 							</div>
 
 							<div>
-								<input type="number" step="any" class="latitude" min="0" max="90" required>
+								<label>
+									<span>Latitude: </span>
+									<input type="number" step="any" class="latitude" min="0" max="90" required>
+								</label>
 								<select class="latitude">
 									<option value="°N">°N</option>
 									<option value="°S">°S</option>
@@ -41,7 +47,10 @@
 							</div>
 							
 							<div>
-								<input type="number" step="any" class="longitude" min="0" max="180" required>
+								<label>
+									<span>Longitude: </span>
+									<input type="number" step="any" class="longitude" min="0" max="180" required>
+								</label>
 								<select class="longitude">
 									<option value="°E">°E</option>
 									<option value="°W">°W</option>
@@ -49,7 +58,10 @@
 							</div>
 
 							<div>
-								<input type="number" step="any" min="0" class="speed">
+								<label>
+									<span>Wind Speed: </span>
+									<input type="number" step="any" min="0" class="speed">
+								</label>
 								<select class="speed">
 									<option value="kph">kph</option>
 									<option value="mph">mph</option>
@@ -58,11 +70,14 @@
 							</div>
 
 							<div>
-								<select class="stage">
-									<option value="Extratropical cyclone">Extratropical cyclone</option>
-									<option value="Subtropical cyclone">Subtropical cyclone</option>
-									<option value="Tropical cyclone">Tropical cyclone</option>
-								</select>
+								<label>
+									<span>Stage: </span>
+									<select class="stage">
+										<option value="Extratropical cyclone">Extratropical cyclone</option>
+										<option value="Subtropical cyclone">Subtropical cyclone</option>
+										<option value="Tropical cyclone">Tropical cyclone</option>
+									</select>
+								</label>
 							</div>
 
 							<div>
@@ -112,7 +127,7 @@
 
 		<div id="image-container" class="hidden">
 			<img id="loader" src="/static/media/cyclone.png" alt="loading">
-			<div id="output" class="hidden"></div>
+			<img id="output" alt="generated track map" class="hidden" />
 			<button id="close">
 				<ion-icon name="close-outline"></ion-icon>
 			</button>

@@ -33,23 +33,23 @@ document.querySelector("form").addEventListener("submit", (e) => {
 
 	const data = [];
 	document.querySelectorAll("#inputs .point").forEach(point => {
-		const name = point.children[0].children[0].value;
+		const name = point.querySelector(".name").value;
 
-		const latitude = Number(point.children[1].children[0].value) +
-			point.children[1].children[1].getAttribute("data-selected").replace("°", "");
+		const latitude = point.querySelector("input.latitude").value +
+			point.querySelector("select.latitude").getAttribute("data-selected").replace("°", "");
 
-		const longitude = point.children[2].children[0].value +
-			point.children[2].children[1].getAttribute("data-selected").replace("°", "");
+		const longitude = point.querySelector("input.longitude").value +
+			point.querySelector("select.longitude").getAttribute("data-selected").replace("°", "");
 
-		
-		let speed = Number(point.children[3].children[0].value);
-		if (point.children[3].children[1].getAttribute("data-selected") === "mph") {
+		let speed  = Number(point.querySelector("input.speed").value);
+		const unit = point.querySelector("select.speed").getAttribute("data-selected");
+		if (unit === "mph") {
 			speed /= 1.151;
-		} else if (point.children[3].children[1].getAttribute("data-selected") === "kph") {
+		} else if (unit === "kph") {
 			speed /= 1.852;
 		}
 
-		const stage = point.children[4].children[0].getAttribute("data-selected");		
+		const stage = point.querySelector(".stage").getAttribute("data-selected");
 
 		data.push({
 			name:      name,
