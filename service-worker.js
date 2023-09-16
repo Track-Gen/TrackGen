@@ -40,7 +40,7 @@ self.addEventListener('fetch', e => {
 
         console.log('Caching', e.request.url);
 
-        await cache.put(e.request, response.clone());
+        await cache.put(e.request.url, response.clone());
 
         return response;
     })());

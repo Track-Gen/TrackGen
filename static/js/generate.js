@@ -44,22 +44,40 @@ document.querySelector("#close").addEventListener("click", () => {
 
 let loaded = false;
 const BLUE_MARBLE = new Image();
+BLUE_MARBLE.crossOrigin="anonymous";
 const loader = document.querySelector("#map-indicator .loader");
 
 const MAP_URL = "https://cdn.trackgen.codingcactus.codes/map.jpg";
-caches.match(MAP_URL)
-    .then(r => {
-       if (r || confirm("This website requires you to download a ~150MB image, would you like to continue?")) {
-           BLUE_MARBLE.src = MAP_URL;
-           loader.style.display = "";
-       } else {
-           document.querySelector("body").innerHTML = "<h1>Bye 👋</h1>";
-       }
-    });
+
+setTimeout(() => {
+    caches.match(MAP_URL)
+        .then(r => {
+            if (r || confirm("This website requires you to download a ~150MB image, would you like to continue?")) {
+                loader.style.display = "";
+                
+                fetch(MAP_URL)
+                    .then(response => {
+                        const clone = response.clone()
+                        response.blob()
+                            .then(blob => {
+                                caches.open("cache-v4")
+                                    .then(cache => {
+                                        cache.put(MAP_URL, clone)
+                                            .then(() => {
+                                                BLUE_MARBLE.src = URL.createObjectURL(blob);
+                                            });
+                                   });
+                           });
+                    });
+           } else {
+               document.querySelector("body").innerHTML = "<h1>Bye 👋</h1>";
+           }
+        });
+}, 500);
 
 
 
-BLUE_MARBLE.onload = () => {
+BLUE_MARBLE.onload = (e) => {
     loaded = true;
     loader.style.display = "none";
     document.querySelector("#map-indicator ion-icon").style.color = "#70c542";
