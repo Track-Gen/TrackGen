@@ -44,18 +44,26 @@ document.querySelector("#close").addEventListener("click", () => {
 
 let loaded = false;
 const BLUE_MARBLE = new Image();
+const loader = document.querySelector("#map-indicator .loader");
 
-const MAP_URL = "/static/media/map.jpg";
+const MAP_URL = "https://cdn.trackgen.codingcactus.codes/map.jpg";
 caches.match(MAP_URL)
     .then(r => {
        if (r || confirm("This website requires you to download a ~150MB image, would you like to continue?")) {
            BLUE_MARBLE.src = MAP_URL;
+           loader.style.display = "";
        } else {
-           document.querySelector("main").innerHTML = "<h1>Bye 👋</h1>";
+           document.querySelector("body").innerHTML = "<h1>Bye 👋</h1>";
        }
     });
 
-BLUE_MARBLE.onload = () => { loaded = true };
+
+
+BLUE_MARBLE.onload = () => {
+    loaded = true;
+    loader.style.display = "none";
+    document.querySelector("#map-indicator ion-icon").style.color = "#70c542";
+}
 
 function createMap(data, accessible) {
     document.querySelector("#close").classList.add("hidden");

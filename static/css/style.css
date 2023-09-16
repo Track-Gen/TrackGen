@@ -37,6 +37,31 @@ h1 {
 	color: var(--foreground-1);
 }
 
+#map-indicator {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+#map-indicator ion-icon {
+  color: #fff;
+  font-size: 20px;
+}
+
+#map-indicator .loader {
+  height: 20px;
+  width: 20px;
+  animation: spin 1s linear infinite;
+  transform-origin: center center;
+}
+
+#map-indicator .loader-path {
+  stroke-dasharray: 105,100;
+  stroke-linecap: round;
+}
+
 main {
 	margin: 5vh 5vw;
 	white-space: nowrap;

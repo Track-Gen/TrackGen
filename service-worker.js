@@ -1,4 +1,4 @@
-const cacheName = "cache-v3";
+const cacheName = "cache-v4";
 
 self.addEventListener('install', e => {
     e.waitUntil(
@@ -33,7 +33,7 @@ self.addEventListener('fetch', e => {
 
         console.log('Fetching', e.request.url);
 
-        if (r && (e.request.url === "https://trackgen.codingcactus.repl.co/static/media/map.jpg" || !navigator.onLine)) return r;
+        if (r && (e.request.url === "https://cdn.trackgen.codingcactus.codes/map.jpg" || !navigator.onLine)) return r;
 
         const response = await fetch(e.request);
         const cache = await caches.open(cacheName);
