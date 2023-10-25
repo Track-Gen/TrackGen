@@ -3,19 +3,19 @@ function catToColour(cat, accessible) {
         if (cat === -999) {
             return "#C0C0C0";
         } else if (cat === -2) {
-            return "#5EBAFF";
+            return "#6EC1EA";
         } else if (cat === -1) {
-            return "#00FAF4";
+            return "#4DFFFF";
         } else if (cat === 1) {
-            return "#FFF795";
+            return "#FFFFD9";
         } else if (cat === 2) {
-            return "#FFD821";
+            return "#FFD98C";
         } else if (cat === 3) {
-            return "#FF8F20";
+            return "#FF9E59";
         } else if (cat === 4) {
-            return "#FF6060";
+            return "#FF738A";
         } else {
-            return "#C464D9";
+            return "#A188FC";
         }
     } else {
         if (cat === -999) {
